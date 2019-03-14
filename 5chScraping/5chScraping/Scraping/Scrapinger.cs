@@ -47,7 +47,17 @@ namespace _5chScraping.Scraping
         }
 
         /// <summary>
-        /// 過去スレをスクレイピング
+        /// 過去スレをスクレイピング(karma系)
+        /// </summary>
+        /// <param name="threadUri"></param>
+        /// <returns></returns>
+        public async Task<Tuple<ChThread, Uri>> ScrapingKarma(Uri threadUri)
+        {
+            return await Scraping(threadUri);
+        }
+
+        /// <summary>
+        /// 過去スレをスクレイピング(fate系)
         /// </summary>
         /// <param name="threadUri"></param>
         /// <returns></returns>
@@ -123,7 +133,7 @@ namespace _5chScraping.Scraping
 
             var kakikomiDetail = root.GetElementsByTagName("dt");
             var kakikomiSource = root.GetElementsByTagName("dd");
-            
+
             Uri nextUri = null;
 
             var trimRegex = new Regex("<.>|<..>|<...>");
@@ -140,11 +150,17 @@ namespace _5chScraping.Scraping
                 //<>を削除                
                 detail = trimRegex.Replace(detail, "");                
                 detail = trimRegex_2.Replace(detail, "");
-                //<時間取り出し>                
-                var datetimeString = dateRegex.Match(detail).Value;                
-                var timeString = timeRegex.Match(detail).Value;
-                datetimeString += " " + timeString;                
-                var postTime = DateTime.Parse(datetimeString);
+                //<時間取り出し>                               
+                DateTime postTime = new DateTime();
+                if (dateRegex.IsMatch(detail))
+                {
+                    var datetimeString = dateRegex.Match(detail).Value;
+                    var timeString = timeRegex.Match(detail).Value;
+                    datetimeString += " " + timeString;
+
+                    postTime = DateTime.Parse(datetimeString);
+                }
+
                 //ID取り出し                
                 var idString = idRegex.Match(detail).Value.Replace("ID:","");
 

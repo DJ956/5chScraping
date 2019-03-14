@@ -22,6 +22,8 @@ namespace _5chScraping
 
         private Regex urlRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
         private Regex currentRegex = new Regex("http.*nozomi.*/");
+        private Regex fateRegex = new Regex("http.*fate.*");
+        private Regex karmaRegex = new Regex("http.*karma.*");
 
 
         public Form1()
@@ -53,11 +55,18 @@ namespace _5chScraping
             {
                 items = await scrapinger.Scraping(new Uri(textBoxThreadURL.Text));
             }
-            //過去スレ
-            else
-            {                
+            //過去スレ(fate系)
+            else if (fateRegex.IsMatch(textBoxThreadURL.Text))
+            {
                 items = await scrapinger.ScrapingPast(new Uri(textBoxThreadURL.Text));
             }
+            //過去スレ(karma系)
+            else if (karmaRegex.IsMatch(textBoxThreadURL.Text))
+            {
+                items = await scrapinger.ScrapingKarma(new Uri(textBoxThreadURL.Text));
+            }
+
+
             //スクレイピングできなかった場合
             if(items.Item1 == null)
             {
