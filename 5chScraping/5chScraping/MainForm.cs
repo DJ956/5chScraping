@@ -24,6 +24,9 @@ namespace _5chScraping
         private Regex currentRegex = new Regex("http.*nozomi.*/");
         private Regex fateRegex = new Regex("http.*fate.*");
         private Regex karmaRegex = new Regex("http.*karma.*");
+        private Regex ikuraRegex = new Regex("http.*ikura.*");
+        private Regex maturiRegex = new Regex("http.*matsuri.*");
+        private Regex rosieRegex = new Regex("http.*rosie.*");
 
 
         public Form1()
@@ -69,7 +72,19 @@ namespace _5chScraping
             {
                 items = await scrapinger.ScrapingKarma(new Uri(textBoxThreadURL.Text));
             }
-
+            //過去スレ(イクラ系)
+            else if (ikuraRegex.IsMatch(textBoxThreadURL.Text))
+            {
+                items = await scrapinger.ScrapingIkura(new Uri(textBoxThreadURL.Text));
+            }
+            else if (maturiRegex.IsMatch(textBoxThreadURL.Text))
+            {
+                items = await scrapinger.ScrapingMaturi(new Uri(textBoxThreadURL.Text));
+            }
+            else if (rosieRegex.IsMatch(textBoxThreadURL.Text))
+            {
+                items = await scrapinger.ScrapingRosie(new Uri(textBoxThreadURL.Text));
+            }
 
             //スクレイピングできなかった場合
             if(items.Item1 == null)

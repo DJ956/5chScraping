@@ -31,7 +31,7 @@ namespace _5chScraping.Scraping
                 {
                     var match = item.ToString();
                     //過去スレ以外のURLが引っかからないようにする
-                    if (!match.Contains("comic") || match.Contains(currentUri.ToString())) { continue; }
+                    if (!match.Contains("read.cgi") || match.Contains(currentUri.ToString())) { continue; }
 
                     var endIndex = match.IndexOf(' ');
                     //URLのあとに空白やごみがあった場合取り除く
@@ -57,6 +57,32 @@ namespace _5chScraping.Scraping
         public async Task<Tuple<ChThread, Uri>> ScrapingKarma(Uri threadUri)
         {
             return await Scraping(threadUri);
+        }
+
+        /// <summary>
+        /// 過去スレをスクレイピング(ikura系)
+        /// </summary>
+        /// <param name="threadUri"></param>
+        /// <returns></returns>
+        public async Task<Tuple<ChThread, Uri>> ScrapingIkura(Uri threadUri)
+        {
+            return await Scraping(threadUri);
+        }
+
+        /// <summary>
+        /// 過去スレをスクレイピング(maturi系)
+        /// こちらはfate系と同じ
+        /// </summary>
+        /// <param name="threadUri"></param>
+        /// <returns></returns>
+        public async Task<Tuple<ChThread, Uri>> ScrapingMaturi(Uri threadUri)
+        {
+            return await ScrapingPast(threadUri);
+        }
+
+        public async Task<Tuple<ChThread, Uri>> ScrapingRosie(Uri threadUri)
+        {
+            return await ScrapingPast(threadUri);
         }
 
         /// <summary>
