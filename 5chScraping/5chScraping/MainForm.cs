@@ -30,9 +30,9 @@ namespace _5chScraping
         {
             InitializeComponent();            
             scrapinger = new Scrapinger();
-            //textBoxThreadURL.Text = "http://nozomi.2ch.sc/test/read.cgi/comic/1552405298/0-";
+            textBoxThreadURL.Text = "http://nozomi.2ch.sc/test/read.cgi/comic/1552405298/0-";
             //textBoxThreadURL.Text = "https://fate.5ch.net/test/read.cgi/comic/1543879008/";
-            textBoxThreadURL.Text = "https://karma.5ch.net/test/read.cgi/comic/1495688463/";
+            //textBoxThreadURL.Text = "https://karma.5ch.net/test/read.cgi/comic/1495688463/";
         }
 
 
@@ -85,10 +85,17 @@ namespace _5chScraping
                 //連続スクレイピングを行う場合
                 if (scrapingContinue)
                 {
+                    this.Text = "スクレイピング: " + chThread.Name;
                     //スクレイピング結果を保存する
-                    ScrapingDataUtil.Save(
-                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"{chThread.Name}.csv"),
-                            chThread.Kakikomies);
+                    try
+                    {
+                        ScrapingDataUtil.Save(
+                            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"{chThread.Name}.csv"),
+                                chThread);
+                    }catch(ArgumentException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                        
+                    }
                     //次スレURLを現行スレURLに置き換えて再びスクレイピングを行う
                     textBoxThreadURL.Text = textBoxNextThread.Text;
                     buttonScrapingExecute.PerformClick();
@@ -97,17 +104,42 @@ namespace _5chScraping
             }
 
             //スクレイピング結果を保存する
-            ScrapingDataUtil.Save($"{chThread.Name}.csv",
-                chThread.Kakikomies);
+            try
+            {
+                ScrapingDataUtil.Save($"{chThread.Name}.csv",
+                    chThread);
+            }catch(ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
+            }
             //スクレイピング結果を表示させる
             var scrapingResultForm = new ScrapingResultForm(chThread.Kakikomies);
             scrapingResultForm.ShowDialog();
 
+            this.Text = "スクレイピング: " + chThread.Name;
         }
 
         private void CheckBoxContinueScraping_CheckedChanged(object sender, EventArgs e)
         {
             scrapingContinue = checkBoxContinueScraping.Checked;
+        }
+
+        private void OpenCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Title = "スクレイピング結果を読み込む";
+            dialog.Filter = "CSVファイル(*.csv)|*.csv";
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                var kakikomies = ScrapingDataUtil.Load(dialog.FileName);
+                var scrapingResultForm = new ScrapingResultForm(kakikomies);
+                scrapingResultForm.ShowDialog();
+            }
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

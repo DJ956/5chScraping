@@ -39,10 +39,17 @@
             this.textBoxNextThread = new System.Windows.Forms.TextBox();
             this.buttonScrapingExecute = new System.Windows.Forms.Button();
             this.checkBoxContinueScraping = new System.Windows.Forms.CheckBox();
+            this.fileFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileFToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(591, 24);
@@ -136,6 +143,35 @@
             this.checkBoxContinueScraping.UseVisualStyleBackColor = true;
             this.checkBoxContinueScraping.CheckedChanged += new System.EventHandler(this.CheckBoxContinueScraping_CheckedChanged);
             // 
+            // fileFToolStripMenuItem
+            // 
+            this.fileFToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openCSVToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.exitToolStripMenuItem});
+            this.fileFToolStripMenuItem.Name = "fileFToolStripMenuItem";
+            this.fileFToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.fileFToolStripMenuItem.Text = "ファイル(&F)";
+            // 
+            // openCSVToolStripMenuItem
+            // 
+            this.openCSVToolStripMenuItem.Name = "openCSVToolStripMenuItem";
+            this.openCSVToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.openCSVToolStripMenuItem.Text = "スクレイピング結果を読み込む(&O)...";
+            this.openCSVToolStripMenuItem.Click += new System.EventHandler(this.OpenCSVToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.exitToolStripMenuItem.Text = "終了(&X)";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -156,6 +192,8 @@
             this.Name = "Form1";
             this.Text = "スクレイピング:";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -174,6 +212,10 @@
         private System.Windows.Forms.TextBox textBoxNextThread;
         private System.Windows.Forms.Button buttonScrapingExecute;
         private System.Windows.Forms.CheckBox checkBoxContinueScraping;
+        private System.Windows.Forms.ToolStripMenuItem fileFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openCSVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 
