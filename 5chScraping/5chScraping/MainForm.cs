@@ -49,8 +49,12 @@ namespace _5chScraping
                 return;
             }
 
+            buttonScrapingExecute.Enabled = false;
+            toolStripProgressBar.Value = 0;
+            toolStripProgressBar.Style = ProgressBarStyle.Marquee;            
+
             var items = new Tuple<ChThread, Uri>(null, null);
-            //現行スレ
+            //現行スレ(nozomi系)
             if (currentRegex.IsMatch(textBoxThreadURL.Text))
             {
                 items = await scrapinger.Scraping(new Uri(textBoxThreadURL.Text));
@@ -71,13 +75,13 @@ namespace _5chScraping
             if(items.Item1 == null)
             {
                 MessageBox.Show("スクレイピングに失敗しました", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                buttonScrapingExecute.Enabled = true;
                 return;
             }
 
             var chThread = items.Item1;
             var nextThread = items.Item2;
             
-
             if (nextThread != null)
             {
                 //次スレを取得できればTextBoxに表示させる
@@ -98,6 +102,7 @@ namespace _5chScraping
                     }
                     //次スレURLを現行スレURLに置き換えて再びスクレイピングを行う
                     textBoxThreadURL.Text = textBoxNextThread.Text;
+                    buttonScrapingExecute.Enabled = true; //一時的にEnableにしないとPerformClickが動かない
                     buttonScrapingExecute.PerformClick();
                     return;
                 }
@@ -117,6 +122,10 @@ namespace _5chScraping
             scrapingResultForm.ShowDialog();
 
             this.Text = "スクレイピング: " + chThread.Name;
+
+            toolStripProgressBar.Value = 100;
+            toolStripProgressBar.Style = ProgressBarStyle.Blocks;
+            buttonScrapingExecute.Enabled = true;
         }
 
         private void CheckBoxContinueScraping_CheckedChanged(object sender, EventArgs e)
