@@ -8,7 +8,8 @@ namespace _5chScraping.Model
 {
     public class ChThread
     {
-        public string Name { get; set; }
-        public int Count { get; set; }
+        public string Name { get; set; }        
+        public Uri Uri { get; set; }
+        public ICollection<kakikomi> Kakikomies { get; set; }
     }
 }

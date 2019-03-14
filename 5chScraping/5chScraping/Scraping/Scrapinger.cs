@@ -1,5 +1,6 @@
 ﻿using _5chScraping.Model;
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net;
@@ -11,13 +12,38 @@ namespace _5chScraping.Scraping
     public class Scrapinger
     {
         private HtmlParser parser;
-        
+        private Regex nextRegex;
         private WebClient webClient;
 
         public Scrapinger()
         {
             parser = new HtmlParser();
-            webClient = new WebClient();
+            webClient = new WebClient();            
+            nextRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
+        }
+
+        private Uri SearchUri(string comment, Uri currentUri)
+        {
+            //次スレのURLを探す                
+            if (nextRegex.IsMatch(comment))
+            {
+                foreach (var item in nextRegex.Matches(comment))
+                {
+                    var match = item.ToString();
+                    //過去スレ以外のURLが引っかからないようにする
+                    if (!match.Contains("comic") || match.Contains(currentUri.ToString())) { continue; }
+
+                    var endIndex = match.IndexOf(' ');
+                    //URLのあとに空白やごみがあった場合取り除く
+                    if (endIndex > 0)
+                    {
+                        match = match.Substring(0, endIndex);
+                    }
+
+                    return new Uri(match);
+                }                
+            }
+            return null;
         }
 
         /// <summary>
@@ -25,10 +51,11 @@ namespace _5chScraping.Scraping
         /// </summary>
         /// <param name="threadUri"></param>
         /// <returns></returns>
-        public async Task<Tuple<ICollection<kakikomi>, Uri>> ScrapingPast(Uri threadUri)
+        public async Task<Tuple<ChThread, Uri>> ScrapingPast(Uri threadUri)
         {
-            var document = await webClient.DownloadStringTaskAsync(threadUri);
+            var document = await webClient.DownloadStringTaskAsync(threadUri);            
             var root = await parser.ParseDocumentAsync(document);
+            var title = root.Title;
             
             var kakikomiDetail = root.GetElementsByTagName("div");  
             var kakikomiID = root.GetElementsByClassName("uid");    //ID
@@ -37,13 +64,12 @@ namespace _5chScraping.Scraping
             Uri nextUri = null;
 
             var dateRegex = new Regex("[0-9]+/[0-9]+/[0-9]+");
-            var timeRegex = new Regex("[0-9]+:[0-9]+:[0-9]+");
-            var nextRegex = new Regex("https:.*5ch.*/");
+            var timeRegex = new Regex("[0-9]+:[0-9]+:[0-9]+");            
 
             var kakikomies = new List<kakikomi>(kakikomiSource.Length);
             for (int index = 0; index < kakikomiSource.Length; index++)
             {
-                var detail = kakikomiDetail[index].OuterHtml.Trim(' ');                
+                var detail = kakikomiDetail[index].OuterHtml.Trim(' ');
 
                 var idString = kakikomiID[index].TextContent;   //ID
 
@@ -52,10 +78,10 @@ namespace _5chScraping.Scraping
                 {
                     var dateString = dateRegex.Match(kakikomiTime[index].TextContent);
                     var timeString = timeRegex.Match(kakikomiTime[index].TextContent);
-                    var dateTimeString = dateString + " " + timeString;                    
+                    var dateTimeString = dateString + " " + timeString;
                     postTime = DateTime.Parse(dateTimeString);  //書き込み時刻
                 }
-               
+
                 var kakikomi = new kakikomi()
                 {
                     Comment = kakikomiSource[index].TextContent.Trim(),    //コメント
@@ -69,22 +95,18 @@ namespace _5chScraping.Scraping
 
                 if (nextUri != null) { continue; }
 
-                //次スレのURLを探す                
-                if (nextRegex.IsMatch(kakikomi.Comment))
-                {                       
-                    var match = nextRegex.Match(kakikomi.Comment).Value;
-                    
-                    var endIndex = match.IndexOf(' ');
-                    if(endIndex > 0)
-                    {
-                        match = match.Substring(0, endIndex);
-                    }
-                    
-                    nextUri = new Uri(match);
-                }
+                //次スレのURLを探す     
+                nextUri = SearchUri(kakikomi.Comment, threadUri);
             }
 
-            return new Tuple<ICollection<kakikomi>, Uri>(kakikomies, nextUri);
+            var chThread = new ChThread()
+            {
+                Name = title,
+                Uri = threadUri,
+                Kakikomies = kakikomies
+            };
+
+            return new Tuple<ChThread, Uri>(chThread, nextUri);
         }
 
         /// <summary>
@@ -93,10 +115,11 @@ namespace _5chScraping.Scraping
         /// <param name="threadUri"></param>
         /// <returns>引数のスレURLをスクレイピングし、書き込み一覧を返す。
         /// 次スレのURLも存在すれば取得する</returns>        
-        public async Task<Tuple<ICollection<kakikomi>, Uri>> Scraping(Uri threadUri)
+        public async Task<Tuple<ChThread, Uri>> Scraping(Uri threadUri)
         {
             var document = await webClient.DownloadStringTaskAsync(threadUri);
             var root = await parser.ParseDocumentAsync(document);
+            var title = root.Title;
 
             var kakikomiDetail = root.GetElementsByTagName("dt");
             var kakikomiSource = root.GetElementsByTagName("dd");
@@ -107,8 +130,7 @@ namespace _5chScraping.Scraping
             var trimRegex_2 = new Regex("<.*>");
             var dateRegex = new Regex("[0-9]+/[0-9]+/[0-9]+");
             var timeRegex = new Regex("[0-9]+:[0-9]+:[0-9]+");
-            var idRegex = new Regex("ID:.*");
-            var nextRegex = new Regex("https:.*5ch.*/");
+            var idRegex = new Regex("ID:.*");            
 
             var kakikomies = new List<kakikomi>(kakikomiSource.Length);
 
@@ -140,13 +162,17 @@ namespace _5chScraping.Scraping
                 if(nextUri != null) { continue; }
 
                 //次スレのURLを探す                
-                if (nextRegex.IsMatch(kakikomi.Comment))
-                {
-                    nextUri = new Uri(nextRegex.Match(kakikomi.Comment).Value);
-                }                
+                nextUri = SearchUri(kakikomi.Comment, threadUri);        
             }
 
-            return new Tuple<ICollection<kakikomi>, Uri>(kakikomies, nextUri);
+            var chThread = new ChThread()
+            {
+                Name = title,
+                Uri = threadUri,
+                Kakikomies = kakikomies
+            };
+
+            return new Tuple<ChThread, Uri>(chThread, nextUri);
         }
     }
 }
