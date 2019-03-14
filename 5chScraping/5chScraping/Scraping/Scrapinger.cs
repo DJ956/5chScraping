@@ -40,6 +40,9 @@ namespace _5chScraping.Scraping
                         match = match.Substring(0, endIndex);
                     }
 
+                    //URL内にitestという文字があると移動した際にfateに置き換わるためページ内容が正常に取得できない問題対策用
+                    if (match.Contains("itest")) { match = match.Replace("itest", "fate"); }
+
                     return new Uri(match);
                 }                
             }
