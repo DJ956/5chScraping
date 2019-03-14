@@ -1,0 +1,17 @@
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\5chScraping.exe.config
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\5chScraping.exe
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\5chScraping.pdb
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\AngleSharp.dll
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\System.Text.Encoding.CodePages.dll
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\AngleSharp.xml
+C:\Users\dexte\source\repos\5chScraping\5chScraping\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\5chScraping.csprojAssemblyReference.cache
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\_5chScraping.Form1.resources
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\_5chScraping.Properties.Resources.resources
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\5chScraping.csproj.GenerateResource.cache
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\5chScraping.csproj.CoreCompileInputs.cache
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\5chScraping.csproj.CopyComplete
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\5chScraping.exe
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\5chScraping.pdb
+C:\Users\dexte\source\repos\5chScraping\5chScraping\obj\Debug\_5chScraping.ScrapingResultForm.resources
