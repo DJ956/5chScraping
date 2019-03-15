@@ -16,7 +16,7 @@ def main():
 
 	while line:
 		result = tagger.parse(line)
-		fo.write(result[1:])
+		fo.write(result)		
 		line = fi.readline()
 
 	fi.close()

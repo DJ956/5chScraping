@@ -8,24 +8,25 @@ import glob
 import os
 from gensim.models import word2vec
 
+out = "data.txt"
+
 #CSVがあるフォルダからデータを取得してtxtに変換する
 def generate(path):
   index = 0
-  files = glob.glob(path)
+  files = glob.glob(path + "/*.csv")
   size = len(files)
 
-  for file in files:       
-    if file.find('.csv') > 0:
-      print("\r{}/{}-{}を解析...".format(size, index, file), end="")
+  for file in files:           
+    print("\r{}/{}-{}を解析...".format(size, index, file), end="")
 
-      name = "data_{}.txt".format(index)      
-      cmd = "python mecab_csv.py {} {}".format(file, name)
-      subprocess.call(cmd)      
-      index = index + 1
+    name = "data_{}.txt".format(index)      
+    cmd = "python mecab_csv.py {} {}".format(file, name)
+    subprocess.call(cmd)      
+    index = index + 1
 
 #data_{}.txtファイルを1つのdata.txtにまとめる
 def combine():
-  fo = open("data.txt", 'a', encoding = "utf-8")
+  fo = open(out, 'a', encoding = "utf-8")
 
   for file in glob.glob("./data_*.txt"):
     fi = open(file, 'r', encoding = "utf-8")
@@ -48,7 +49,7 @@ def main():
     generate(argv[1])
     print("CSVフアィルの形態解析完了")
 
-  out = "data.txt"
+  
 
   print("テキストデータ結合開始")
   combine()

@@ -50,8 +50,7 @@ def main():
 			line = fi.readline()
 			continue
 		else:
-			result = tagger.parse(documents[2])
-			result = trim(result)
+			result = tagger.parse(trim(documents[2])) #形態解析、不必要な記号削除
 			fo.write(result)
 			fo.write("\n")
 
