@@ -4,6 +4,31 @@
 
 import MeCab
 import sys
+import re
+
+#邪魔な記号などを取り除く
+def trim(source):
+	t_half = re.compile(r'[!-~]')	#半角記号、数字、英字
+	t_full = re.compile(r'[︰-＠]')	#全角記号
+	t_full_2 = re.compile(r'[、・’〜：＜＞＿｜「」｛｝【】『』〈〉“”◯○〔〕…――――◇◆■●]')
+	t_commma = re.compile(r'[。]')
+	t_url = re.compile(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-…]+')
+	t_tag = re.compile(r"<[^>]*?>")	#HTML tag
+	#t_n = re.compile(r'\n')	#改行文字
+	t_space = re.compile(r'[\s+]')	#１以上の空白文字
+	t_num = re.compile(r"[0-9]")
+
+	source = t_half.sub("", source)
+	source = t_full.sub("", source)
+	source = t_full_2.sub("", source)
+	source = t_commma.sub("", source)
+	source = t_url.sub("", source)
+	source = t_tag.sub("", source)
+	#source = t_n.sub("", source)
+	source = t_space.sub("", source)
+	source = t_num.sub("", source)
+
+	return source
 
 def main():
 	argv = sys.argv
@@ -26,7 +51,9 @@ def main():
 			continue
 		else:
 			result = tagger.parse(documents[2])
-			fo.write(result[1:])
+			result = trim(result)
+			fo.write(result)
+			fo.write("\n")
 
 		line = fi.readline()
 

@@ -11,8 +11,13 @@ from gensim.models import word2vec
 #CSVがあるフォルダからデータを取得してtxtに変換する
 def generate(path):
   index = 0
-  for file in glob.glob(path):       
+  files = glob.glob(path)
+  size = len(files)
+
+  for file in files:       
     if file.find('.csv') > 0:
+      print("\r{}/{}-{}を解析...".format(size, index, file), end="")
+
       name = "data_{}.txt".format(index)      
       cmd = "python mecab_csv.py {} {}".format(file, name)
       subprocess.call(cmd)      
@@ -39,11 +44,18 @@ def main():
   argv = sys.argv
   #CSVフォルダ結合をしない場合は1文字適当に打ち込む
   if len(argv[1]) > 5:
+    print("CSVファイルの形態解析開始")
     generate(argv[1])
+    print("CSVフアィルの形態解析完了")
 
+  out = "data.txt"
+
+  print("テキストデータ結合開始")
   combine()
+  print("テキストデータ結合完了 - {}".format(out))
   
-  sentences = word2vec.LineSentence("data.txt")
+  print("データモデル生成開始")
+  sentences = word2vec.LineSentence(out)
   model = word2vec.Word2Vec(sentences,
                           sg=1,
                           size=100,
@@ -52,6 +64,7 @@ def main():
                           hs=1,
                           negative=0)
   model.save(argv[2])
+  print("データモデル生成完了 - {}".format(argv[2]))
   
 if __name__ == '__main__':
 	main()
