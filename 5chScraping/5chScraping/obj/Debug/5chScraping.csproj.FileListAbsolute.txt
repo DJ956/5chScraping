@@ -23,7 +23,6 @@ D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\System.Runtime
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\System.Text.Encoding.CodePages.dll
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\AngleSharp.xml
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
-D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.csprojAssemblyReference.cache
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\_5chScraping.Form1.resources
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\_5chScraping.Properties.Resources.resources
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\_5chScraping.ScrapingResultForm.resources

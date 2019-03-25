@@ -19,6 +19,8 @@ namespace _5chScraping.Scraping
         private static int INDEX_URL = 4;
         private static int INDEX_TITLE = 5;
 
+        private static Regex filterRegex = new Regex(" |【|】|©2ch.net|[|]★");
+
         /// <summary>
         /// スレ内容をCSVに保存する
         /// フォーマット:
@@ -37,6 +39,7 @@ namespace _5chScraping.Scraping
             }
             
             fileName = fileName.Trim();
+            fileName = filterRegex.Replace(fileName, "");
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
             try
             {

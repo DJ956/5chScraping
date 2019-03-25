@@ -6,7 +6,7 @@
 import MeCab
 import re
 import sys
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 #名詞の中の一般と固有名詞だけをlistで返す
 def filter(documents):
@@ -46,7 +46,9 @@ def count(word_list, show_count):
 
 	return sorted_dict, total
 
+
 #結果をグラフにして出力する
+###
 def create_plt(dicts, show_count, total):
 	plt.figure(figsize=(15, 5))
 	plt.title(u'最頻出ワードベスト:{0} 総単語数:{1}'.format(show_count, total), size=16)
@@ -60,6 +62,7 @@ def create_plt(dicts, show_count, total):
 	plt.tight_layout()
 
 	plt.savefig("result.png")
+###
 
 #テキストデータをロードして文字列を返す
 def load(path):	
@@ -98,7 +101,7 @@ def main():
 	dicts, total = count(word_list, show_count)
 
 	print("結果を出力中...")
-	create_plt(dicts, show_count, total)
+	#create_plt(dicts, show_count, total)
 	save(out_path, dicts, show_count)
 	print("出力完了:{}".format(out_path))
 	

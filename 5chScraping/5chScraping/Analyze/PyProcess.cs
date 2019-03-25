@@ -51,11 +51,16 @@ namespace _5chScraping.Analyze
             var root = Path.GetDirectoryName(csv);           
             var outPath = Path.Combine(root, "data.txt");
             var arguments = $"{csv} {outPath}";
-            Execute(MECAB, arguments);
+            if(Execute(MECAB, arguments) < 0)
+            {
+                throw new Exception($"{MECAB}が正常に処理されませんでした。");
+            }
             
             var resultPath = Path.Combine(root, "result.txt");
             arguments = $"{outPath} {resultPath} {showCount}";
-            Execute(ANALYZER, arguments);
+            if(Execute(ANALYZER, arguments) < 0){
+                throw new Exception($"{ANALYZER}が正常に処理されませんでした。");
+            }
 
             var wordCount = ScrapingDataUtil.LoadWordResult(resultPath);
 

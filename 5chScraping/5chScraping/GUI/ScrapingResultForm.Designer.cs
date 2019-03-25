@@ -30,11 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScrapingResultForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.labelThreadURL = new System.Windows.Forms.ToolStripStatusLabel();
-            this.listViewKakikomi = new System.Windows.Forms.ListView();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.menuItemWordCount = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.labelThreadURL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.listViewKakikomi = new System.Windows.Forms.ListView();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,29 @@
             this.statusStrip1.Size = new System.Drawing.Size(686, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemWordCount});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(44, 20);
+            this.toolStripDropDownButton1.Text = "解析";
+            // 
+            // menuItemWordCount
+            // 
+            this.menuItemWordCount.Name = "menuItemWordCount";
+            this.menuItemWordCount.Size = new System.Drawing.Size(159, 22);
+            this.menuItemWordCount.Text = "最頻出単語リスト";
+            this.menuItemWordCount.Click += new System.EventHandler(this.MenuItemWordCount_Click);
+            // 
+            // progressBar
+            // 
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(100, 16);
             // 
             // labelThreadURL
             // 
@@ -67,29 +90,6 @@
             this.listViewKakikomi.TabIndex = 1;
             this.listViewKakikomi.UseCompatibleStateImageBehavior = false;
             // 
-            // toolStripDropDownButton1
-            // 
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuItemWordCount});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(44, 20);
-            this.toolStripDropDownButton1.Text = "解析";
-            // 
-            // menuItemWordCount
-            // 
-            this.menuItemWordCount.Name = "menuItemWordCount";
-            this.menuItemWordCount.Size = new System.Drawing.Size(180, 22);
-            this.menuItemWordCount.Text = "最頻出単語リスト";
-            this.menuItemWordCount.Click += new System.EventHandler(this.MenuItemWordCount_Click);
-            // 
-            // progressBar
-            // 
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 16);
-            // 
             // ScrapingResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -97,6 +97,7 @@
             this.ClientSize = new System.Drawing.Size(686, 256);
             this.Controls.Add(this.listViewKakikomi);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ScrapingResultForm";
             this.Text = "ScrapingResultForm";
             this.Load += new System.EventHandler(this.ScrapingResultForm_Load);

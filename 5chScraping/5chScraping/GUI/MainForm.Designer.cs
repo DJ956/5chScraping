@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.設定SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.csvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -45,8 +48,6 @@
             this.textBoxNextThread = new System.Windows.Forms.TextBox();
             this.buttonScrapingExecute = new System.Windows.Forms.Button();
             this.checkBoxContinueScraping = new System.Windows.Forms.CheckBox();
-            this.設定SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.csvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +91,21 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.exitToolStripMenuItem.Text = "終了(&X)";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
+            // 設定SToolStripMenuItem
+            // 
+            this.設定SToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.csvToolStripMenuItem});
+            this.設定SToolStripMenuItem.Name = "設定SToolStripMenuItem";
+            this.設定SToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.設定SToolStripMenuItem.Text = "設定(&S)";
+            // 
+            // csvToolStripMenuItem
+            // 
+            this.csvToolStripMenuItem.Name = "csvToolStripMenuItem";
+            this.csvToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.csvToolStripMenuItem.Text = "CSV保存先(&A)...";
+            this.csvToolStripMenuItem.Click += new System.EventHandler(this.CsvToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -192,21 +208,6 @@
             this.checkBoxContinueScraping.UseVisualStyleBackColor = true;
             this.checkBoxContinueScraping.CheckedChanged += new System.EventHandler(this.CheckBoxContinueScraping_CheckedChanged);
             // 
-            // 設定SToolStripMenuItem
-            // 
-            this.設定SToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.csvToolStripMenuItem});
-            this.設定SToolStripMenuItem.Name = "設定SToolStripMenuItem";
-            this.設定SToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.設定SToolStripMenuItem.Text = "設定(&S)";
-            // 
-            // csvToolStripMenuItem
-            // 
-            this.csvToolStripMenuItem.Name = "csvToolStripMenuItem";
-            this.csvToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.csvToolStripMenuItem.Text = "CSV保存先(&A)...";
-            this.csvToolStripMenuItem.Click += new System.EventHandler(this.CsvToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -223,6 +224,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "スクレイピング:";
