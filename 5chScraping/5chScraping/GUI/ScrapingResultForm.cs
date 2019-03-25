@@ -62,6 +62,7 @@ namespace _5chScraping
             {
                 var item = new string[] { index.ToString(), kakikomi.ID, kakikomi.Comment, kakikomi.PostTime.ToString() };
                 listViewKakikomi.Items.Add(new ListViewItem(item));
+                //if(index % 2 == 0) { listViewKakikomi.Items[index - 1].BackColor = Color.LightGray; }
                 index++;
             }
         }

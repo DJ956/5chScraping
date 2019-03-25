@@ -35,7 +35,7 @@
             // listViewWords
             // 
             this.listViewWords.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewWords.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listViewWords.Font = new System.Drawing.Font("游明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.listViewWords.Location = new System.Drawing.Point(0, 0);
             this.listViewWords.Name = "listViewWords";
             this.listViewWords.Size = new System.Drawing.Size(311, 333);

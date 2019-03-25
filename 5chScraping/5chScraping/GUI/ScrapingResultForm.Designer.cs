@@ -83,7 +83,9 @@
             // 
             // listViewKakikomi
             // 
+            this.listViewKakikomi.BackColor = System.Drawing.SystemColors.Window;
             this.listViewKakikomi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewKakikomi.Font = new System.Drawing.Font("游明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.listViewKakikomi.Location = new System.Drawing.Point(0, 0);
             this.listViewKakikomi.Name = "listViewKakikomi";
             this.listViewKakikomi.Size = new System.Drawing.Size(686, 234);
