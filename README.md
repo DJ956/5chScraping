@@ -1,4 +1,4 @@
 # 5chScraping
 メイアビの5chの書き込みを整理してほしい情報だけを収集するようにするのが目的
 
-スクレイピング機能をC#のWindwos Formで実装し、単語処理をPythonのWord2VecとMeCabで実装している
+スクレイピング機能をC#のWindwos Formで実装し、単語処理をPythonのMeCabで実装している
