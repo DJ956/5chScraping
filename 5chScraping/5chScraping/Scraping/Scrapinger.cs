@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net;
 using AngleSharp.Html.Parser;
+using AngleSharp.Dom;
 using System.Text.RegularExpressions;
+using AngleSharp.Html.Dom;
 
 namespace _5chScraping.Scraping
 {
@@ -13,13 +15,40 @@ namespace _5chScraping.Scraping
     {
         private HtmlParser parser;
         private Regex nextRegex;
-        private WebClient webClient;
 
         public Scrapinger()
         {
-            parser = new HtmlParser();
-            webClient = new WebClient();            
+            parser = new HtmlParser();         
             nextRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
+        }
+
+        /// <summary>
+        /// 処理する対象のサイトがどのメソッドを使用すればいいかに正規表現を使っていたが限界が来たために自動で判断するようにした
+        /// サイトのタグが現行スレ系か、過去スレ経過を見定める
+        /// 今後新しいタイプのタグのサイトが増える可能性あり。
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        private async Task<Tuple<SiteType, IHtmlDocument>> WhichTypeAsync(Uri uri)
+        {
+            using (var webClient = new WebClient())
+            {
+                var document = await webClient.DownloadStringTaskAsync(uri);
+                var root = await parser.ParseDocumentAsync(document);
+                var type = SiteType.None;
+
+                if (root.GetElementsByTagName("dd").Length > 10)
+                {
+                    type = SiteType.Current;
+                }
+                else if (root.GetElementsByTagName("div").HasClass("message"))
+                {
+                    type = SiteType.Past;
+                }
+
+                var result = new Tuple<SiteType, IHtmlDocument>(type, root);
+                return result;
+            }
         }
 
         private Uri SearchUri(string comment, Uri currentUri)
@@ -50,39 +79,35 @@ namespace _5chScraping.Scraping
         }
 
         /// <summary>
-        /// 過去スレをスクレイピング(karma系)
+        /// スレのタグからどのタイプのスクレイピングを行えばいいか自動で判断するようにした改良版
         /// </summary>
         /// <param name="threadUri"></param>
         /// <returns></returns>
-        public async Task<Tuple<ChThread, Uri>> ScrapingKarma(Uri threadUri)
+        public async Task<Tuple<ChThread, Uri>> ScrapingThread(Uri threadUri)
         {
-            return await Scraping(threadUri);
-        }
+            var result = await WhichTypeAsync(threadUri);
+            var type = result.Item1;
+            var root = result.Item2;
 
-        /// <summary>
-        /// 過去スレをスクレイピング(ikura系)
-        /// </summary>
-        /// <param name="threadUri"></param>
-        /// <returns></returns>
-        public async Task<Tuple<ChThread, Uri>> ScrapingIkura(Uri threadUri)
-        {
-            return await Scraping(threadUri);
-        }
-
-        /// <summary>
-        /// 過去スレをスクレイピング(maturi系)
-        /// こちらはfate系と同じ
-        /// </summary>
-        /// <param name="threadUri"></param>
-        /// <returns></returns>
-        public async Task<Tuple<ChThread, Uri>> ScrapingMaturi(Uri threadUri)
-        {
-            return await ScrapingPast(threadUri);
-        }
-
-        public async Task<Tuple<ChThread, Uri>> ScrapingRosie(Uri threadUri)
-        {
-            return await ScrapingPast(threadUri);
+            var items = new Tuple<ChThread, Uri>(null, null);
+            switch (type)
+            {
+                case SiteType.Current:
+                    {
+                        items = await Scraping(threadUri, root);
+                        break;
+                    }
+                case SiteType.Past:
+                    {
+                        items = await ScrapingPast(threadUri, root);
+                        break;
+                    }
+                case SiteType.None:
+                    {
+                        break;
+                    }
+            }
+            return items;
         }
 
         /// <summary>
@@ -90,10 +115,16 @@ namespace _5chScraping.Scraping
         /// </summary>
         /// <param name="threadUri"></param>
         /// <returns></returns>
-        public async Task<Tuple<ChThread, Uri>> ScrapingPast(Uri threadUri)
+        private async Task<Tuple<ChThread, Uri>> ScrapingPast(Uri threadUri, IHtmlDocument root)
         {
-            var document = await webClient.DownloadStringTaskAsync(threadUri);            
-            var root = await parser.ParseDocumentAsync(document);
+            if (root == null)
+            {
+                using (var webClient = new WebClient())
+                {
+                    var document = await webClient.DownloadStringTaskAsync(threadUri);
+                    root = await parser.ParseDocumentAsync(document);
+                }
+            }
             var title = root.Title;
             
             var kakikomiDetail = root.GetElementsByTagName("div");  
@@ -154,10 +185,16 @@ namespace _5chScraping.Scraping
         /// <param name="threadUri"></param>
         /// <returns>引数のスレURLをスクレイピングし、書き込み一覧を返す。
         /// 次スレのURLも存在すれば取得する</returns>        
-        public async Task<Tuple<ChThread, Uri>> Scraping(Uri threadUri)
+        private async Task<Tuple<ChThread, Uri>> Scraping(Uri threadUri, IHtmlDocument root)
         {
-            var document = await webClient.DownloadStringTaskAsync(threadUri);
-            var root = await parser.ParseDocumentAsync(document);
+            if (root == null)
+            {
+                using (var webClient = new WebClient())
+                {
+                    var document = await webClient.DownloadStringTaskAsync(threadUri);
+                    root = await parser.ParseDocumentAsync(document);
+                }
+            }
             var title = root.Title;
 
             var kakikomiDetail = root.GetElementsByTagName("dt");

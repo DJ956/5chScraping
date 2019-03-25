@@ -48,12 +48,14 @@ namespace _5chScraping
             columnDateTime.Width = 150;
 
             var headers = new ColumnHeader[] { columnCount, columnID, columnComment, columnDateTime };
-            listViewKakikomi.Columns.AddRange(headers);     
-            
+            listViewKakikomi.Columns.AddRange(headers);
+
+            var index = 1;
             foreach(var kakikomi in chThread.Kakikomies)
             {
-                var item = new string[] { chThread.Kakikomies.Count.ToString(), kakikomi.ID, kakikomi.Comment, kakikomi.PostTime.ToString() };
+                var item = new string[] { index.ToString(), kakikomi.ID, kakikomi.Comment, kakikomi.PostTime.ToString() };
                 listViewKakikomi.Items.Add(new ListViewItem(item));
+                index++;
             }
         }
 

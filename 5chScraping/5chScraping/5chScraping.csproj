@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Scraping\ScrapingDataUtil.cs" />
     <Compile Include="Scraping\Scrapinger.cs" />
+    <Compile Include="Scraping\SiteType.cs" />
     <EmbeddedResource Include="GUI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

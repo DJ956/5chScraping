@@ -22,15 +22,7 @@ namespace _5chScraping
         private AnalyzerProcessObserver analyzerObserver;
         private bool scrapingContinue = false;
 
-
         private Regex urlRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
-        private Regex currentRegex = new Regex("http.*nozomi.*/");
-        private Regex fateRegex = new Regex("http.*fate.*");
-        private Regex karmaRegex = new Regex("http.*karma.*");
-        private Regex ikuraRegex = new Regex("http.*ikura.*");
-        private Regex maturiRegex = new Regex("http.*matsuri.*");
-        private Regex rosieRegex = new Regex("http.*rosie.*");
-
 
         public Form1()
         {
@@ -44,12 +36,7 @@ namespace _5chScraping
 
 
         private void Form1_Load(object sender, EventArgs e)
-        {            
-            var pyProcess = new PyProcess(analyzerObserver);            
-            var path = @"C:\Users\dexte\Downloads\test\あ.csv";
-            var wordCount = pyProcess.CallWordCount(path, 20);
-            var result = new WordResultForm(wordCount);
-            result.ShowDialog();
+        {           
         }
 
         private async void ButtonScrapingExecute_Click(object sender, EventArgs e)
@@ -62,49 +49,25 @@ namespace _5chScraping
 
             buttonScrapingExecute.Enabled = false;
             toolStripProgressBar.Value = 0;
-            toolStripProgressBar.Style = ProgressBarStyle.Marquee;            
+            toolStripProgressBar.Style = ProgressBarStyle.Marquee;
 
-            var items = new Tuple<ChThread, Uri>(null, null);
-            //現行スレ(nozomi系)
-            if (currentRegex.IsMatch(textBoxThreadURL.Text))
-            {
-                items = await scrapinger.Scraping(new Uri(textBoxThreadURL.Text));
-            }
-            //過去スレ(fate系)
-            else if (fateRegex.IsMatch(textBoxThreadURL.Text))
-            {
-                items = await scrapinger.ScrapingPast(new Uri(textBoxThreadURL.Text));
-            }
-            //過去スレ(karma系)
-            else if (karmaRegex.IsMatch(textBoxThreadURL.Text))
-            {
-                items = await scrapinger.ScrapingKarma(new Uri(textBoxThreadURL.Text));
-            }
-            //過去スレ(イクラ系)
-            else if (ikuraRegex.IsMatch(textBoxThreadURL.Text))
-            {
-                items = await scrapinger.ScrapingIkura(new Uri(textBoxThreadURL.Text));
-            }
-            else if (maturiRegex.IsMatch(textBoxThreadURL.Text))
-            {
-                items = await scrapinger.ScrapingMaturi(new Uri(textBoxThreadURL.Text));
-            }
-            else if (rosieRegex.IsMatch(textBoxThreadURL.Text))
-            {
-                items = await scrapinger.ScrapingRosie(new Uri(textBoxThreadURL.Text));
-            }
+            var uri = new Uri(textBoxThreadURL.Text);
+            var items = await scrapinger.ScrapingThread(uri);
 
-            //スクレイピングできなかった場合
-            if(items.Item1 == null)
+            var chThread = items.Item1;
+            var nextThread = items.Item2;
+
+            //スクレイピングできなかった場合 終了する
+            if (chThread == null)
             {
                 MessageBox.Show("スクレイピングに失敗しました", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                buttonScrapingExecute.Enabled = true;
+                toolStripProgressBar.Value = 0;
+                toolStripProgressBar.Style = ProgressBarStyle.Blocks;
                 buttonScrapingExecute.Enabled = true;
                 return;
             }
 
-            var chThread = items.Item1;
-            var nextThread = items.Item2;
-            
             if (nextThread != null)
             {
                 //次スレを取得できればTextBoxに表示させる
