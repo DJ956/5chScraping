@@ -16,10 +16,9 @@ using _5chScraping.GUI;
 
 namespace _5chScraping
 {
-    public partial class Form1 : Form, IMainForm
+    public partial class Form1 : Form
     {
         private Scrapinger scrapinger;
-        private AnalyzerProcessObserver analyzerObserver;
         private bool scrapingContinue = false;
 
         private Regex urlRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
@@ -28,7 +27,6 @@ namespace _5chScraping
         {
             InitializeComponent();            
             scrapinger = new Scrapinger();
-            analyzerObserver = new AnalyzerProcessObserver(this);
             textBoxThreadURL.Text = "http://nozomi.2ch.sc/test/read.cgi/comic/1552405298/0-";
             //textBoxThreadURL.Text = "https://fate.5ch.net/test/read.cgi/comic/1543879008/";
             //textBoxThreadURL.Text = "https://karma.5ch.net/test/read.cgi/comic/1495688463/";
@@ -45,6 +43,15 @@ namespace _5chScraping
             {
                 MessageBox.Show("適切なURLを入力してください", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+
+            var rootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            //保存先を指定
+            var dialog = new FolderBrowserDialog();
+            dialog.Description = "CSVファイルを保存するフォルダ";
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                rootDirectory = dialog.SelectedPath;
             }
 
             buttonScrapingExecute.Enabled = false;
@@ -79,8 +86,7 @@ namespace _5chScraping
                     //スクレイピング結果を保存する
                     try
                     {
-                        ScrapingDataUtil.Save(
-                            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"{chThread.Name}.csv"),
+                        ScrapingDataUtil.Save(Path.Combine(rootDirectory, $"{chThread.Name}.csv"),
                                 chThread);
                     }catch(ArgumentException ex)
                     {
@@ -95,23 +101,23 @@ namespace _5chScraping
             }
 
             //スクレイピング結果を保存する
+            var savePath = Path.Combine(rootDirectory, $"{chThread.Name}.csv");
             try
             {
-                ScrapingDataUtil.Save($"{chThread.Name}.csv",
-                    chThread);
+                ScrapingDataUtil.Save(savePath, chThread);
             }catch(ArgumentException ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
             }
-            //スクレイピング結果を表示させる
-            var scrapingResultForm = new ScrapingResultForm(chThread);
-            scrapingResultForm.ShowDialog();
-
             this.Text = "スクレイピング: " + chThread.Name;
 
             toolStripProgressBar.Value = 100;
             toolStripProgressBar.Style = ProgressBarStyle.Blocks;
             buttonScrapingExecute.Enabled = true;
+
+            //スクレイピング結果を表示させる
+            var scrapingResultForm = new ScrapingResultForm(chThread, savePath);
+            scrapingResultForm.ShowDialog();
         }
 
         private void CheckBoxContinueScraping_CheckedChanged(object sender, EventArgs e)
@@ -127,7 +133,7 @@ namespace _5chScraping
             if(dialog.ShowDialog() == DialogResult.OK)
             {
                 var chThread = ScrapingDataUtil.Load(dialog.FileName);
-                var scrapingResultForm = new ScrapingResultForm(chThread);
+                var scrapingResultForm = new ScrapingResultForm(chThread, dialog.FileName);
                 scrapingResultForm.ShowDialog();
             }
         }
@@ -135,24 +141,6 @@ namespace _5chScraping
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        /// <summary>
-        /// Python プロセスを実行開始した場合
-        /// 進行バーを表示させる
-        /// </summary>
-        public void StartProcess()
-        {
-            Console.WriteLine("Start Process");
-        }
-
-        /// <summary>
-        /// Pythonプロセスが終了したとき
-        /// 進行バーを停止させ、結果を表示させる。
-        /// </summary>
-        public void EndProcess()
-        {
-            Console.WriteLine("End Process");
         }
     }
 }

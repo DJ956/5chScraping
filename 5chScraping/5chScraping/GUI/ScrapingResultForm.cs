@@ -9,17 +9,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using _5chScraping.Analyze;
+using _5chScraping.GUI;
 
 namespace _5chScraping
 {
-    public partial class ScrapingResultForm : Form
+    public partial class ScrapingResultForm : Form, IMainForm
     {
         private ChThread chThread;
+        private string csvPath;
+        private WordCount wordCount;
+        private AnalyzerProcessObserver observer;
 
-        public ScrapingResultForm(ChThread chThread)
+        public ScrapingResultForm(ChThread chThread, string csvPath)
         {
             InitializeComponent();
             this.chThread = chThread;
+            this.csvPath = csvPath;
+            observer = new AnalyzerProcessObserver(this);
             InitializeListView();            
         }
 
@@ -72,6 +79,27 @@ namespace _5chScraping
         private void LabelThreadURL_Click(object sender, EventArgs e)
         {
             Process.Start(labelThreadURL.Text);
+        }
+
+        private void MenuItemWordCount_Click(object sender, EventArgs e)
+        {
+            var pyProcess = new PyProcess(observer);
+            wordCount = pyProcess.CallWordCount(csvPath, 20);
+
+            var resultForm = new WordResultForm(wordCount);
+            resultForm.ShowDialog();
+        }
+
+        public void StartProcess()
+        {
+            progressBar.Style = ProgressBarStyle.Marquee;
+            progressBar.Value = 0;
+        }
+
+        public void EndProcess()
+        {
+            progressBar.Style = ProgressBarStyle.Blocks;
+            progressBar.Value = 100;
         }
     }
 }

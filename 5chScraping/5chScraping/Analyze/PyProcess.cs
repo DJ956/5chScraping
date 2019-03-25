@@ -17,25 +17,26 @@ namespace _5chScraping.Analyze
     {
         private IProcessObserver observer;
 
-        private static readonly string MECAB = "mecab_csv.py";
-        private static readonly string ANALYZER = "analyzer.py";
+        private static readonly string MECAB = "mecab_csv.exe";
+        private static readonly string ANALYZER = "analyzer.exe";
 
         public PyProcess(IProcessObserver observer)
         {
             this.observer = observer;
         }
 
-        private void Execute(string argument)
+        private int Execute(string exeName, string argument)
         {
             using (var p = new Process())
             {
-                p.StartInfo.FileName = "python";
+                p.StartInfo.FileName = exeName;
                 p.StartInfo.Arguments = argument;
                 p.StartInfo.UseShellExecute = true;
                 observer.StartProcess();
                 p.Start();
                 p.WaitForExit();
                 observer.EndProcess();
+                return p.ExitCode;
             }
         }
 
@@ -47,17 +48,14 @@ namespace _5chScraping.Analyze
         /// <returns></returns>
         public WordCount CallWordCount(string csv, int showCount)
         {
-            var root = Path.GetDirectoryName(csv);
-
-            var mecab_path = Path.Combine(root, MECAB);
+            var root = Path.GetDirectoryName(csv);           
             var outPath = Path.Combine(root, "data.txt");
-            var arguments = $"{mecab_path} {csv} {outPath}";
-            Execute(arguments);
-
-            var analyzer_Path = Path.Combine(root, ANALYZER);
+            var arguments = $"{csv} {outPath}";
+            Execute(MECAB, arguments);
+            
             var resultPath = Path.Combine(root, "result.txt");
-            arguments = $"{analyzer_Path} {outPath} {resultPath} {showCount}";
-            Execute(arguments);
+            arguments = $"{outPath} {resultPath} {showCount}";
+            Execute(ANALYZER, arguments);
 
             var wordCount = ScrapingDataUtil.LoadWordResult(resultPath);
 
