@@ -33,3 +33,9 @@ D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.cs
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.exe
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.pdb
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\_5chScraping.GUI.WordResultForm.resources
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\5chScraping.exe.manifest
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\5chScraping.application
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.exe.manifest
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.application
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\analyzer.exe
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\bin\Debug\mecab_csv.exe

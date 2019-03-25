@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("5chScraping")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("5chのメイドインアビスの書き込み内容を調べるソフト")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("5chScraping")]

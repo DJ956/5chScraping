@@ -22,14 +22,18 @@ namespace _5chScraping
         private bool scrapingContinue = false;
 
         private Regex urlRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
-
+       
         public Form1()
         {
             InitializeComponent();            
             scrapinger = new Scrapinger();
             textBoxThreadURL.Text = "http://nozomi.2ch.sc/test/read.cgi/comic/1552405298/0-";
-            //textBoxThreadURL.Text = "https://fate.5ch.net/test/read.cgi/comic/1543879008/";
-            //textBoxThreadURL.Text = "https://karma.5ch.net/test/read.cgi/comic/1495688463/";
+            
+            if (Properties.Settings.Default.rootDirectory == "")
+            {
+                Properties.Settings.Default.rootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                Properties.Settings.Default.Save();
+            }
         }
 
 
@@ -45,14 +49,7 @@ namespace _5chScraping
                 return;
             }
 
-            var rootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //保存先を指定
-            var dialog = new FolderBrowserDialog();
-            dialog.Description = "CSVファイルを保存するフォルダ";
-            if(dialog.ShowDialog() == DialogResult.OK)
-            {
-                rootDirectory = dialog.SelectedPath;
-            }
+            var rootDirectory = Properties.Settings.Default.rootDirectory;
 
             buttonScrapingExecute.Enabled = false;
             toolStripProgressBar.Value = 0;
@@ -141,6 +138,18 @@ namespace _5chScraping
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void CsvToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //保存先を指定
+            var dialog = new FolderBrowserDialog();
+            dialog.Description = "CSVファイルを保存するフォルダ";            
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Properties.Settings.Default.rootDirectory = dialog.SelectedPath;
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }
