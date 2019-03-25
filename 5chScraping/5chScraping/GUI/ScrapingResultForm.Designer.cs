@@ -30,10 +30,14 @@
         {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.listViewKakikomi = new System.Windows.Forms.ListView();
+            this.labelThreadURL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.labelThreadURL});
             this.statusStrip1.Location = new System.Drawing.Point(0, 234);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(686, 22);
@@ -49,6 +53,14 @@
             this.listViewKakikomi.TabIndex = 1;
             this.listViewKakikomi.UseCompatibleStateImageBehavior = false;
             // 
+            // labelThreadURL
+            // 
+            this.labelThreadURL.IsLink = true;
+            this.labelThreadURL.Name = "labelThreadURL";
+            this.labelThreadURL.Size = new System.Drawing.Size(31, 17);
+            this.labelThreadURL.Text = "URL:";
+            this.labelThreadURL.Click += new System.EventHandler(this.LabelThreadURL_Click);
+            // 
             // ScrapingResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -59,6 +71,8 @@
             this.Name = "ScrapingResultForm";
             this.Text = "ScrapingResultForm";
             this.Load += new System.EventHandler(this.ScrapingResultForm_Load);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -68,5 +82,6 @@
 
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ListView listViewKakikomi;
+        private System.Windows.Forms.ToolStripStatusLabel labelThreadURL;
     }
 }

@@ -7,8 +7,12 @@ using System.Diagnostics;
 
 namespace _5chScraping.Analyze
 {
+    /// <summary>
+    /// Python プロセスを実行するクラス
+    /// </summary>
     public class PyProcess
     {
+        //プロセスの開始と終了をFormに通知させる。
         private IProcessObserver observer;
 
         public PyProcess(IProcessObserver observer)

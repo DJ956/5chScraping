@@ -32,3 +32,4 @@ D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.cs
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.csproj.CopyComplete
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.exe
 D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\5chScraping.pdb
+D:\Documents\GitHub\5chScraping\5chScraping\5chScraping\obj\Debug\_5chScraping.GUI.WordResultForm.resources

@@ -55,29 +55,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyze\AnalyzerProcessObserver.cs" />
+    <Compile Include="Analyze\IProcessObserver.cs" />
     <Compile Include="Analyze\PyProcess.cs" />
-    <Compile Include="Analyze\WordCounter.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="GUI\IMainForm.cs" />
+    <Compile Include="GUI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="GUI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\WordResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\WordResultForm.Designer.cs">
+      <DependentUpon>WordResultForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Kakikomi.cs" />
     <Compile Include="Model\KakikomiType.cs" />
     <Compile Include="Model\ChThread.cs" />
+    <Compile Include="Model\WordCount.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScrapingResultForm.cs">
+    <Compile Include="GUI\ScrapingResultForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ScrapingResultForm.Designer.cs">
+    <Compile Include="GUI\ScrapingResultForm.Designer.cs">
       <DependentUpon>ScrapingResultForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Scraping\ScrapingDataUtil.cs" />
     <Compile Include="Scraping\Scrapinger.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="GUI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\WordResultForm.resx">
+      <DependentUpon>WordResultForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -88,7 +100,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ScrapingResultForm.resx">
+    <EmbeddedResource Include="GUI\ScrapingResultForm.resx">
       <DependentUpon>ScrapingResultForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

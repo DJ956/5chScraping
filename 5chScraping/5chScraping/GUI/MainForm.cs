@@ -15,9 +15,10 @@ using _5chScraping.Analyze;
 
 namespace _5chScraping
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IMainForm
     {
-        private Scrapinger scrapinger;        
+        private Scrapinger scrapinger;
+        private AnalyzerProcessObserver analyzerObserver;
         private bool scrapingContinue = false;
 
 
@@ -34,6 +35,7 @@ namespace _5chScraping
         {
             InitializeComponent();            
             scrapinger = new Scrapinger();
+            analyzerObserver = new AnalyzerProcessObserver(this);
             textBoxThreadURL.Text = "http://nozomi.2ch.sc/test/read.cgi/comic/1552405298/0-";
             //textBoxThreadURL.Text = "https://fate.5ch.net/test/read.cgi/comic/1543879008/";
             //textBoxThreadURL.Text = "https://karma.5ch.net/test/read.cgi/comic/1495688463/";
@@ -50,7 +52,7 @@ namespace _5chScraping
 
             var argument = path + " " + data + " " + output + " " + showCount;
 
-            var pyProcess = new PyProcess(new AnalyzerProcessObserver());
+            //var pyProcess = new PyProcess(analyzerObserver);
 
         }
 
@@ -143,7 +145,7 @@ namespace _5chScraping
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);                
             }
             //スクレイピング結果を表示させる
-            var scrapingResultForm = new ScrapingResultForm(chThread.Kakikomies);
+            var scrapingResultForm = new ScrapingResultForm(chThread);
             scrapingResultForm.ShowDialog();
 
             this.Text = "スクレイピング: " + chThread.Name;
@@ -165,8 +167,8 @@ namespace _5chScraping
             dialog.Filter = "CSVファイル(*.csv)|*.csv";
             if(dialog.ShowDialog() == DialogResult.OK)
             {
-                var kakikomies = ScrapingDataUtil.Load(dialog.FileName);
-                var scrapingResultForm = new ScrapingResultForm(kakikomies);
+                var chThread = ScrapingDataUtil.Load(dialog.FileName);
+                var scrapingResultForm = new ScrapingResultForm(chThread);
                 scrapingResultForm.ShowDialog();
             }
         }
@@ -174,6 +176,24 @@ namespace _5chScraping
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        /// <summary>
+        /// Python プロセスを実行開始した場合
+        /// 進行バーを表示させる
+        /// </summary>
+        public void StartProcess()
+        {
+
+        }
+
+        /// <summary>
+        /// Pythonプロセスが終了したとき
+        /// 進行バーを停止させ、結果を表示させる。
+        /// </summary>
+        public void EndProcess()
+        {
+            throw new NotImplementedException();
         }
     }
 }

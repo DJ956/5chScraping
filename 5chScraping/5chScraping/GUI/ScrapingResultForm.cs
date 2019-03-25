@@ -8,17 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace _5chScraping
 {
     public partial class ScrapingResultForm : Form
     {
-        private ICollection<kakikomi> Kakikomies;
+        private ChThread chThread;
 
-        public ScrapingResultForm(ICollection<kakikomi> kakikomies)
+        public ScrapingResultForm(ChThread chThread)
         {
             InitializeComponent();
-            this.Kakikomies = kakikomies;
+            this.chThread = chThread;
             InitializeListView();            
         }
 
@@ -26,8 +27,10 @@ namespace _5chScraping
         {            
             listViewKakikomi.GridLines = true;
             listViewKakikomi.FullRowSelect = true;
-            listViewKakikomi.View = View.Details;            
-            
+            listViewKakikomi.View = View.Details;
+
+            this.Text = $"{chThread.Name} - {chThread.Uri}";
+            labelThreadURL.Text = chThread.Uri.ToString();            
 
             var columnCount = new ColumnHeader();
             var columnComment = new ColumnHeader();
@@ -47,9 +50,9 @@ namespace _5chScraping
             var headers = new ColumnHeader[] { columnCount, columnID, columnComment, columnDateTime };
             listViewKakikomi.Columns.AddRange(headers);     
             
-            foreach(var kakikomi in Kakikomies)
+            foreach(var kakikomi in chThread.Kakikomies)
             {
-                var item = new string[] { kakikomi.Count.ToString(), kakikomi.ID, kakikomi.Comment, kakikomi.PostTime.ToString() };
+                var item = new string[] { chThread.Kakikomies.Count.ToString(), kakikomi.ID, kakikomi.Comment, kakikomi.PostTime.ToString() };
                 listViewKakikomi.Items.Add(new ListViewItem(item));
             }
         }
@@ -57,6 +60,16 @@ namespace _5chScraping
         private void ScrapingResultForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// スレのURLを踏むとブラウザが起動するようにする。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LabelThreadURL_Click(object sender, EventArgs e)
+        {
+            Process.Start(labelThreadURL.Text);
         }
     }
 }

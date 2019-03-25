@@ -15,11 +15,22 @@ namespace _5chScraping.Scraping
         private static int INDEX_ID = 1;
         private static int INDEX_COMMENT = 2;
         private static int INDEX_DATETIME = 3;
-      
+
+        private static int INDEX_URL = 4;
+        private static int INDEX_TITLE = 5;
+
+        /// <summary>
+        /// スレ内容をCSVに保存する
+        /// フォーマット:
+        /// (1行目)       スレ数,ID,コメント,投稿時刻_URL:https://~..._タイトル:---
+        /// (2行目以降)   
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="chThread"></param>
         public static void Save(string fileName, ChThread chThread)
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine($"スレ数,ID,コメント,投稿時刻_URL:{chThread.Uri.ToString()}_タイトル:{chThread.Name}");
+            builder.AppendLine($"スレ数,ID,コメント,投稿時刻,{chThread.Uri.ToString()},{chThread.Name}");
             foreach(var kakikomi in chThread.Kakikomies)
             {
                 builder.AppendLine($"{kakikomi.Count},{kakikomi.ID},{kakikomi.Comment},{kakikomi.PostTime.ToString()}");
@@ -37,14 +48,33 @@ namespace _5chScraping.Scraping
             }
         }
 
-        public static ICollection<kakikomi> Load(string path)
+        /// <summary>
+        /// CSVファイルを読み込む
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static ChThread Load(string path)
         {
+            var chThread = new ChThread();
             var kakikomies = new List<kakikomi>();
             var lines = File.ReadAllLines(path, Encoding.UTF8);
+
             bool skip = true;
             foreach(var line in lines)
             {
-                if(skip == true) { skip = false; continue; } //最初の1行は読み飛ばす
+                //最初の一行目でスレのURI,タイトルを取る
+                if (skip == true)
+                {
+                    var split = line.Split(',');
+                    var uri = split[INDEX_URL];
+                    var title = split[INDEX_TITLE];
+
+                    chThread.Uri = new Uri(uri);
+                    chThread.Name = title;
+
+                    skip = false;
+                }
+                //スレ内容を取得する。
                 var documents = line.Split(',');
                 if(documents.Length == 4)
                 {
@@ -65,8 +95,33 @@ namespace _5chScraping.Scraping
                     kakikomies.Add(kakikomi);
                 }
             }
+            chThread.Kakikomies = kakikomies;
+            return chThread;
+        }
 
-            return kakikomies;
+        /// <summary>
+        /// 単語数テキストを読み込む
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static WordCount LoadWordResult(string path)
+        {
+            var dict = new Dictionary<string, int>();
+
+            var lines = File.ReadAllLines(path);
+            foreach (var line in lines)
+            {
+                if (!line.Contains(":")) { continue; }
+                var split = line.Split(':');
+
+                var word = split[0];
+                int count = -1;
+                if (!int.TryParse(split[1], out count)) { continue; }
+
+                dict.Add(word, count);
+            }
+
+            return new WordCount(dict);
         }
 
     }

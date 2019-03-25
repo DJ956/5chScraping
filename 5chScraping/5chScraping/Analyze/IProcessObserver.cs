@@ -9,9 +9,6 @@ namespace _5chScraping.Analyze
     public interface IProcessObserver
     {
         void StartProcess();
-
-        void Processing();
-
         void EndProcess();      
     }
 }

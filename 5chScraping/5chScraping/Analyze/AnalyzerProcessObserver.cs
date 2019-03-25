@@ -8,19 +8,21 @@ namespace _5chScraping.Analyze
 {
     public class AnalyzerProcessObserver : IProcessObserver
     {
-        public void EndProcess()
+        private IMainForm form;
+
+        public AnalyzerProcessObserver(IMainForm form)
         {
-            throw new NotImplementedException();
+            this.form = form;
         }
 
-        public void Processing()
+        public void EndProcess()
         {
-            throw new NotImplementedException();
+            form.EndProcess();
         }
 
         public void StartProcess()
         {
-            throw new NotImplementedException();
+            form.StartProcess();
         }
     }
 }
