@@ -12,6 +12,7 @@ using System.IO;
 using _5chScraping.Model;
 using _5chScraping.Scraping;
 using _5chScraping.Analyze;
+using _5chScraping.GUI;
 
 namespace _5chScraping
 {
@@ -43,17 +44,12 @@ namespace _5chScraping
 
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            var root = @"D:\Documents\GitHub\5chScraping\Analyze";
-            var path = Path.Combine(root, "analyzer.py");
-            var data = Path.Combine(root, "data.txt");
-            var output = Path.Combine(root, "result.txt");
-            var showCount = "20";
-
-            var argument = path + " " + data + " " + output + " " + showCount;
-
-            //var pyProcess = new PyProcess(analyzerObserver);
-
+        {            
+            var pyProcess = new PyProcess(analyzerObserver);            
+            var path = @"C:\Users\dexte\Downloads\test\あ.csv";
+            var wordCount = pyProcess.CallWordCount(path, 20);
+            var result = new WordResultForm(wordCount);
+            result.ShowDialog();
         }
 
         private async void ButtonScrapingExecute_Click(object sender, EventArgs e)
@@ -184,7 +180,7 @@ namespace _5chScraping
         /// </summary>
         public void StartProcess()
         {
-
+            Console.WriteLine("Start Process");
         }
 
         /// <summary>
@@ -193,7 +189,7 @@ namespace _5chScraping
         /// </summary>
         public void EndProcess()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("End Process");
         }
     }
 }

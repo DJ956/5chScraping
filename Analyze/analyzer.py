@@ -77,7 +77,7 @@ def save(path, dicts, show_count):
 	index = 0
 	with open(path, 'w', encoding='utf-8') as fo:
 		for k, v in dicts.items():
-			fo.write("{0}_{1}\n".format(k, v))			
+			fo.write("{0}:{1}\n".format(k, v))			
 
 def main():
 	argv = sys.argv
