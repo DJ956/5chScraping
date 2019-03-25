@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #1:data.txt
-#2:最頻出単語表示数
+#2:出力結果(*.txt)
+#3:最頻出単語表示数
 
 import MeCab
 import re
@@ -76,10 +77,7 @@ def save(path, dicts, show_count):
 	index = 0
 	with open(path, 'w', encoding='utf-8') as fo:
 		for k, v in dicts.items():
-			fo.write("{0}/{1} {2}:{3}回\n".format(index, show_count, k, v))
-			fo.write("-" * 30)
-			fo.write('\n')
-			index += 1
+			fo.write("{0}:{1}\n".format(k, v))			
 
 def main():
 	argv = sys.argv

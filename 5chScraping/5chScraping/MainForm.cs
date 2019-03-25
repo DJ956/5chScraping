@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using _5chScraping.Model;
 using _5chScraping.Scraping;
+using _5chScraping.Analyze;
 
 namespace _5chScraping
 {
@@ -41,7 +42,16 @@ namespace _5chScraping
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            var root = @"D:\Documents\GitHub\5chScraping\Analyze";
+            var path = Path.Combine(root, "analyzer.py");
+            var data = Path.Combine(root, "data.txt");
+            var output = Path.Combine(root, "result.txt");
+            var showCount = "20";
+
+            var argument = path + " " + data + " " + output + " " + showCount;
+
+            var pyProcess = new PyProcess(new AnalyzerProcessObserver());
+
         }
 
         private async void ButtonScrapingExecute_Click(object sender, EventArgs e)
