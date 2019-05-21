@@ -151,5 +151,21 @@ namespace _5chScraping
                 Properties.Settings.Default.Save();
             }
         }
+
+        private void OpenUpdateCSVstoolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+            dialog.Description = "CSVフォルダ";
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                var threads = new List<ChThread>();
+                foreach(var path in Directory.GetFiles(dialog.SelectedPath, "*.csv"))
+                {
+                    threads.Add(ScrapingDataUtil.Load(path));
+                }
+                var filter = Scrapinger.SearchThreads(threads);
+                new ScrapingResultForm(filter).ShowDialog();
+            }
+        }
     }
 }

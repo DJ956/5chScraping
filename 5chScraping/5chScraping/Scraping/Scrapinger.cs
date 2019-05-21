@@ -13,11 +13,17 @@ namespace _5chScraping.Scraping
 {
     public class Scrapinger
     {
+        private static List<DateTime> UPDATE_DAYS;
+
         private HtmlParser parser;
         private Regex nextRegex;
 
         public Scrapinger()
         {
+            UPDATE_DAYS = new List<DateTime>();
+            var lines = new List<string>(Properties.Resources.Updates.Split('\n'));
+            lines.ForEach(line => UPDATE_DAYS.Add(DateTime.Parse(line)));
+            
             parser = new HtmlParser();         
             nextRegex = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
         }
@@ -255,6 +261,33 @@ namespace _5chScraping.Scraping
             };
 
             return new Tuple<ChThread, Uri>(chThread, nextUri);
+        }
+
+        /// <summary>
+        /// 更新日の書き込みがあるスレッドのみを検索する。
+        /// </summary>
+        /// <param name="threads"></param>
+        /// <returns></returns>
+        public static List<Tuple<ChThread, DateTime>> SearchThreads(List<ChThread> threads)
+        {
+            var result = new List<Tuple<ChThread, DateTime>>();
+            foreach(var thread in threads)
+            {
+                foreach(var kakikomi in thread.Kakikomies)
+                {
+                    var post = kakikomi.PostTime;
+                    var index = UPDATE_DAYS.FindIndex(u => u.Year == post.Year && u.Month == post.Month && u.Day == post.Day);
+                    if (index > 0)
+                    {
+                        result.Add(new Tuple<ChThread, DateTime>(thread, UPDATE_DAYS[index]));
+                        break;
+                    }
+                }
+            }
+
+            result.Sort((a,b) => a.Item2.CompareTo(b.Item2));
+
+            return result;
         }
     }
 }

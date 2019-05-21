@@ -1,12 +1,6 @@
 ﻿using _5chScraping.Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using _5chScraping.Analyze;
@@ -18,6 +12,7 @@ namespace _5chScraping
     {
         private ChThread chThread;
         private string csvPath;
+        private List<Tuple<ChThread, DateTime>> threads;
         private WordCount wordCount;
         private AnalyzerProcessObserver observer;
 
@@ -30,6 +25,16 @@ namespace _5chScraping
             InitializeListView();            
         }
 
+        public ScrapingResultForm(List<Tuple<ChThread, DateTime>> threads)
+        {
+            InitializeComponent();
+            this.threads = threads;
+            InitializeCThreadsListView();
+        }
+
+        /// <summary>
+        /// 1個のスレッドの表示
+        /// </summary>
         private void InitializeListView()
         {            
             listViewKakikomi.GridLines = true;
@@ -65,6 +70,51 @@ namespace _5chScraping
                 //if(index % 2 == 0) { listViewKakikomi.Items[index - 1].BackColor = Color.LightGray; }
                 index++;
             }
+        }
+
+        /// <summary>
+        /// 複数スレッドの表示
+        /// </summary>
+        private void InitializeCThreadsListView()
+        {
+            listViewKakikomi.GridLines = true;
+            listViewKakikomi.FullRowSelect = true;
+            listViewKakikomi.View = View.Details;
+
+            this.Text = $"該当スレッド数:{threads.Count}";
+
+            var columnCount = new ColumnHeader();
+            var columnThreadTitle = new ColumnHeader();
+            var columnThreadUpdateDay = new ColumnHeader();
+
+            columnCount.Text = "スレ数";
+            columnCount.Width = 80;
+
+            columnThreadTitle.Text = "スレッドタイトル";
+            columnThreadTitle.Width = 400;
+            columnThreadTitle.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            columnThreadUpdateDay.Text = "更新日";
+            columnThreadUpdateDay.Width = 200;
+
+            var headers = new ColumnHeader[] { columnCount, columnThreadTitle, columnThreadUpdateDay };
+            listViewKakikomi.Columns.AddRange(headers);
+
+            var index = 1;
+            foreach (var tuple in threads)
+            {
+                var thread = tuple.Item1;
+                var item = new string[] { index.ToString(), thread.Name, tuple.Item2.ToShortDateString() };
+                listViewKakikomi.Items.Add(new ListViewItem(item));
+                index++;
+            }
+
+            listViewKakikomi.DoubleClick += (sender, e) =>
+            {
+                var selectIndex = listViewKakikomi.SelectedIndices[0];
+                new ScrapingResultForm(threads[selectIndex].Item1, "").Show();
+            };
+
         }
 
         private void ScrapingResultForm_Load(object sender, EventArgs e)

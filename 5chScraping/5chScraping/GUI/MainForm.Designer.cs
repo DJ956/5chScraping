@@ -48,6 +48,8 @@
             this.textBoxNextThread = new System.Windows.Forms.TextBox();
             this.buttonScrapingExecute = new System.Windows.Forms.Button();
             this.checkBoxContinueScraping = new System.Windows.Forms.CheckBox();
+            this.openUpdateCSVstoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +69,8 @@
             // 
             this.fileFToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openCSVToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.openUpdateCSVstoolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileFToolStripMenuItem.Name = "fileFToolStripMenuItem";
@@ -76,19 +80,19 @@
             // openCSVToolStripMenuItem
             // 
             this.openCSVToolStripMenuItem.Name = "openCSVToolStripMenuItem";
-            this.openCSVToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.openCSVToolStripMenuItem.Size = new System.Drawing.Size(310, 22);
             this.openCSVToolStripMenuItem.Text = "スクレイピング結果を読み込む(&O)...";
             this.openCSVToolStripMenuItem.Click += new System.EventHandler(this.OpenCSVToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(307, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(310, 22);
             this.exitToolStripMenuItem.Text = "終了(&X)";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -208,6 +212,18 @@
             this.checkBoxContinueScraping.UseVisualStyleBackColor = true;
             this.checkBoxContinueScraping.CheckedChanged += new System.EventHandler(this.CheckBoxContinueScraping_CheckedChanged);
             // 
+            // openUpdateCSVstoolStripMenuItem
+            // 
+            this.openUpdateCSVstoolStripMenuItem.Name = "openUpdateCSVstoolStripMenuItem";
+            this.openUpdateCSVstoolStripMenuItem.Size = new System.Drawing.Size(310, 22);
+            this.openUpdateCSVstoolStripMenuItem.Text = "更新日前後のスクレイピング結果を読み込む(&U)...";
+            this.openUpdateCSVstoolStripMenuItem.Click += new System.EventHandler(this.OpenUpdateCSVstoolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(307, 6);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -259,6 +275,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem 設定SToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem csvToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem openUpdateCSVstoolStripMenuItem;
     }
 }
 
